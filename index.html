@@ -43,7 +43,7 @@
         /* --- CHỮ CHÚC MỪNG --- */
         .header {
             position: absolute;
-            top: 50px;
+            top: 12%; /* Đẩy chữ lên cao một chút */
             width: 100%;
             text-align: center;
             z-index: 100;
@@ -63,18 +63,19 @@
         .header.show .sub-wish { opacity: 1; transform: translateY(0); transition-delay: 1.2s; }
 
         .header h1 {
-            font-size: 1.9rem;
+            font-size: 2.1rem;
             font-family: 'Dancing Script', cursive;
             background: linear-gradient(to right, #c9184a, #ff4d6d, #ff758f);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
             line-height: 1.2;
+            text-shadow: 0 10px 20px rgba(255, 117, 143, 0.2);
         }
 
         .header .main-wish {
             color: #800f2f;
-            font-size: 0.9rem;
+            font-size: 1rem;
             margin-top: 15px;
             font-family: 'Quicksand', sans-serif;
             font-weight: 600;
@@ -82,7 +83,7 @@
 
         .header .sub-wish {
             color: #c9184a;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-top: 10px;
             font-family: 'Pacifico', cursive;
         }
@@ -92,30 +93,31 @@
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             color: #ff4d6d;
-            font-size: 1rem;
+            font-size: 1.1rem;
             text-align: center;
             animation: blink 2s infinite;
             z-index: 101;
             width: 100%;
+            font-weight: bold;
         }
 
-        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
         canvas { display: block; position: absolute; bottom: 0; left: 0; z-index: 10; }
 
         @media (min-width: 768px) {
-            .header h1 { font-size: 3rem; }
-            .header .main-wish { font-size: 1.4rem; }
-            .header .sub-wish { font-size: 1.2rem; }
+            .header h1 { font-size: 3.5rem; }
+            .header .main-wish { font-size: 1.5rem; }
+            .header .sub-wish { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body onclick="startEverything()" ontouchstart="startEverything()">
 
-    <div class="cloud" style="width: 120px; height: 40px; top: 10%; animation-duration: 25s;"></div>
-    <div class="cloud" style="width: 180px; height: 50px; top: 22%; animation-duration: 35s; animation-delay: -5s;"></div>
+    <div class="cloud" style="width: 120px; height: 40px; top: 8%; animation-duration: 25s;"></div>
+    <div class="cloud" style="width: 180px; height: 50px; top: 18%; animation-duration: 35s; animation-delay: -5s;"></div>
 
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop preload="auto">
         <source src="nhacnen.mp3" type="audio/mpeg">
     </audio>
 
@@ -126,7 +128,7 @@
     </div>
 
     <div class="hint" id="hintText">
-        🌸 Chạm vào màn hình để mở quà... 🌸
+        🌸 Chạm vào màn hình để bắt đầu... 🌸
     </div>
 
     <canvas id="gardenCanvas"></canvas>
@@ -151,7 +153,13 @@
 
         function startEverything() {
             if (!isStarted) {
-                music.play().catch(() => {});
+                // Kích hoạt nhạc khi người dùng chạm
+                music.play().then(() => {
+                    console.log("Nhạc đang phát");
+                }).catch((e) => {
+                    console.log("Lỗi phát nhạc: ", e);
+                });
+
                 isStarted = true;
                 hint.style.display = 'none'; 
                 header.classList.add('show');
@@ -161,12 +169,12 @@
 
         const hearts = [];
         function spawnHeart() {
-            if (isStarted && frame % 45 === 0) {
+            if (isStarted && frame % 40 === 0) {
                 hearts.push({
                     x: Math.random() * canvas.width,
                     y: canvas.height + 20,
-                    size: Math.random() * 5 + 3,
-                    speed: Math.random() * 1.2 + 0.5,
+                    size: Math.random() * 6 + 4,
+                    speed: Math.random() * 1.5 + 0.8,
                     life: 1.0
                 });
             }
@@ -198,10 +206,10 @@
             update() {
                 if (isStarted && frame > this.delay) {
                     let stemGap = this.maxStemLen - this.stemLen;
-                    if (stemGap > 0.1) this.stemLen += stemGap * 0.015 + 0.15; 
-                    if (this.stemLen > this.maxStemLen * 0.6) {
+                    if (stemGap > 0.1) this.stemLen += stemGap * 0.018 + 0.2; 
+                    if (this.stemLen > this.maxStemLen * 0.5) {
                         let bloomGap = 1 - this.bloom;
-                        if (bloomGap > 0.005) this.bloom += bloomGap * 0.012;
+                        if (bloomGap > 0.005) this.bloom += bloomGap * 0.015;
                     }
                 }
             }
@@ -209,55 +217,47 @@
             draw() {
                 this.update();
                 if (this.stemLen <= 0) return;
-                const sway = Math.sin(frame * 0.015 + this.swayOffset) * 0.02;
+                const sway = Math.sin(frame * 0.018 + this.swayOffset) * 0.03;
                 ctx.save();
                 ctx.translate(this.startX, this.startY);
                 ctx.rotate(this.angle + sway);
                 
-                // Thân cây
                 ctx.beginPath();
                 ctx.moveTo(0, 0); ctx.lineTo(0, -this.stemLen);
-                ctx.strokeStyle = '#1b4332'; ctx.lineWidth = 6 * this.scale;
+                ctx.strokeStyle = '#1b4332'; ctx.lineWidth = 7 * this.scale;
                 ctx.lineCap = 'round'; ctx.stroke();
                 
-                // Lá
                 if (this.stemLen > 40) {
-                    for(let i=1; i<=2; i++) {
+                    for(let i=1; i<=3; i++) {
                         ctx.save();
-                        ctx.translate(0, -this.stemLen * (i/3.5)); 
+                        ctx.translate(0, -this.stemLen * (i/4.5)); 
                         ctx.rotate(i % 2 === 0 ? 0.7 : -0.7);
-                        this.drawLeaf(40 * this.scale, 20 * this.scale, '#2d6a4f');
+                        this.drawLeaf(45 * this.scale, 22 * this.scale, '#2d6a4f');
                         ctx.restore();
                     }
                 }
                 
-                // Hoa nở
                 if (this.bloom > 0.01) {
                     ctx.save();
                     ctx.translate(0, -this.stemLen);
                     ctx.scale(this.scale * this.bloom, this.scale * this.bloom);
-                    
-                    // Cánh hoa
                     for (let layer = 0; layer < 3; layer++) {
                         ctx.save();
                         ctx.rotate(layer * 0.4);
                         for (let i = 0; i < 6; i++) {
                             ctx.save();
                             ctx.rotate((i * Math.PI * 2) / 6);
-                            this.drawLeaf(65 * (1 - layer * 0.15), 32 * (1 - layer * 0.15), '#ff4d6d', true);
+                            this.drawLeaf(70 * (1 - layer * 0.15), 35 * (1 - layer * 0.15), '#ff4d6d', true);
                             ctx.restore();
                         }
                         ctx.restore();
                     }
-
-                    // --- KHÔI PHỤC NHỤY HOA VÀNG ---
                     ctx.fillStyle = '#ffb703';
                     for (let i = 0; i < 6; i++) {
                         ctx.beginPath();
                         ctx.arc(Math.cos(i) * 6, Math.sin(i) * 6, 4, 0, Math.PI * 2);
                         ctx.fill();
                     }
-
                     ctx.restore();
                 }
                 ctx.restore();
@@ -271,18 +271,21 @@
         function init() {
             flowers.length = 0; grasses.length = 0;
             const cx = canvas.width / 2;
-            const by = canvas.height;
-            const spacing = canvas.width < 500 ? canvas.width * 0.22 : 140;
-            const baseH = canvas.width < 500 ? 180 : 280;
+            const by = canvas.height + 10;
+            
+            // ĐIỀU CHỈNH ĐỘ CAO HOA CHO MOBILE
+            const isMobile = canvas.width < 500;
+            const spacing = isMobile ? canvas.width * 0.23 : 150;
+            const baseH = isMobile ? canvas.height * 0.45 : canvas.height * 0.4; // Tăng tỷ lệ chiều cao cây
 
-            flowers.push(new Flower(cx - spacing, by, -0.35, 0.55, baseH * 0.8, 60)); 
-            flowers.push(new Flower(cx + spacing, by, 0.35, 0.55, baseH * 0.8, 100));
-            flowers.push(new Flower(cx - spacing * 0.5, by, -0.15, 0.7, baseH * 0.9, 30)); 
-            flowers.push(new Flower(cx + spacing * 0.5, by, 0.15, 0.7, baseH * 0.9, 50));
-            flowers.push(new Flower(cx, by, 0, 0.9, baseH, 0));
+            flowers.push(new Flower(cx - spacing, by, -0.3, 0.6, baseH * 0.85, 60)); 
+            flowers.push(new Flower(cx + spacing, by, 0.3, 0.6, baseH * 0.85, 100));
+            flowers.push(new Flower(cx - spacing * 0.45, by, -0.1, 0.75, baseH * 0.95, 30)); 
+            flowers.push(new Flower(cx + spacing * 0.45, by, 0.1, 0.75, baseH * 0.95, 50));
+            flowers.push(new Flower(cx, by, 0, 1.0, baseH * 1.1, 0)); // Cây giữa cao nhất
 
             for (let i = 0; i < canvas.width; i += 10) {
-                grasses.push({ x: i, h: 0, maxH: 25 + Math.random() * 30, off: Math.random() * Math.PI });
+                grasses.push({ x: i, h: 0, maxH: 30 + Math.random() * 30, off: Math.random() * Math.PI });
             }
 
             if(particles.length === 0) {
