@@ -16,7 +16,7 @@
             touch-action: manipulation;
         }
 
-        /* --- MÂY TRẮNG --- */
+        /* --- MÂY TRẮNG BỒNG BỀNH --- */
         .cloud {
             position: absolute;
             background: #fff;
@@ -40,10 +40,10 @@
             to { left: 100%; }
         }
 
-        /* --- CHỮ CHÚC MỪNG --- */
+        /* --- CỤM CHỮ CHÚC MỪNG --- */
         .header {
             position: absolute;
-            top: 12%; /* Đẩy chữ lên cao một chút */
+            top: 10%; 
             width: 100%;
             text-align: center;
             z-index: 100;
@@ -63,14 +63,13 @@
         .header.show .sub-wish { opacity: 1; transform: translateY(0); transition-delay: 1.2s; }
 
         .header h1 {
-            font-size: 2.1rem;
+            font-size: 2.2rem;
             font-family: 'Dancing Script', cursive;
             background: linear-gradient(to right, #c9184a, #ff4d6d, #ff758f);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
             line-height: 1.2;
-            text-shadow: 0 10px 20px rgba(255, 117, 143, 0.2);
         }
 
         .header .main-wish {
@@ -108,23 +107,22 @@
         @media (min-width: 768px) {
             .header h1 { font-size: 3.5rem; }
             .header .main-wish { font-size: 1.5rem; }
-            .header .sub-wish { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body onclick="startEverything()" ontouchstart="startEverything()">
 
-    <div class="cloud" style="width: 120px; height: 40px; top: 8%; animation-duration: 25s;"></div>
+    <div class="cloud" style="width: 120px; height: 40px; top: 7%; animation-duration: 25s;"></div>
     <div class="cloud" style="width: 180px; height: 50px; top: 18%; animation-duration: 35s; animation-delay: -5s;"></div>
 
-    <audio id="bgMusic" loop preload="auto">
+    <audio id="bgMusic" loop preload="auto" playsinline>
         <source src="nhacnen.mp3" type="audio/mpeg">
     </audio>
 
     <div class="header" id="mainHeader">
         <h1>Gửi những bông hoa<br>xinh đẹp nhất 12A1</h1>
-        <p class="main-wish">Chúc các bạn một ngày 8/3 rạng rỡ, tỏa sáng và thành công!</p>
-        <p class="sub-wish">Mãi là những đóa hoa rạng rỡ nhất ✨</p>
+        <p class="main-wish">Chúc các bạn một ngày 8/3 rạng rỡ, tỏa sáng và thành công rực rỡ!</p>
+        <p class="sub-wish">Mãi là những đóa hoa rạng rỡ nhất của lớp mình nhé ✨</p>
     </div>
 
     <div class="hint" id="hintText">
@@ -153,11 +151,10 @@
 
         function startEverything() {
             if (!isStarted) {
-                // Kích hoạt nhạc khi người dùng chạm
-                music.play().then(() => {
-                    console.log("Nhạc đang phát");
-                }).catch((e) => {
-                    console.log("Lỗi phát nhạc: ", e);
+                music.play().catch(() => {
+                    music.muted = true;
+                    music.play();
+                    music.muted = false;
                 });
 
                 isStarted = true;
@@ -206,10 +203,10 @@
             update() {
                 if (isStarted && frame > this.delay) {
                     let stemGap = this.maxStemLen - this.stemLen;
-                    if (stemGap > 0.1) this.stemLen += stemGap * 0.018 + 0.2; 
+                    if (stemGap > 0.1) this.stemLen += stemGap * 0.02 + 0.2; 
                     if (this.stemLen > this.maxStemLen * 0.5) {
                         let bloomGap = 1 - this.bloom;
-                        if (bloomGap > 0.005) this.bloom += bloomGap * 0.015;
+                        if (bloomGap > 0.005) this.bloom += bloomGap * 0.018;
                     }
                 }
             }
@@ -247,7 +244,7 @@
                         for (let i = 0; i < 6; i++) {
                             ctx.save();
                             ctx.rotate((i * Math.PI * 2) / 6);
-                            this.drawLeaf(70 * (1 - layer * 0.15), 35 * (1 - layer * 0.15), '#ff4d6d', true);
+                            this.drawLeaf(75 * (1 - layer * 0.15), 38 * (1 - layer * 0.15), '#ff4d6d', true);
                             ctx.restore();
                         }
                         ctx.restore();
@@ -255,7 +252,7 @@
                     ctx.fillStyle = '#ffb703';
                     for (let i = 0; i < 6; i++) {
                         ctx.beginPath();
-                        ctx.arc(Math.cos(i) * 6, Math.sin(i) * 6, 4, 0, Math.PI * 2);
+                        ctx.arc(Math.cos(i) * 6, Math.sin(i) * 6, 5, 0, Math.PI * 2);
                         ctx.fill();
                     }
                     ctx.restore();
@@ -264,25 +261,21 @@
             }
         }
 
-        const flowers = []; 
-        const grasses = [];
-        const particles = [];
+        const flowers = []; const grasses = []; const particles = [];
 
         function init() {
             flowers.length = 0; grasses.length = 0;
             const cx = canvas.width / 2;
             const by = canvas.height + 10;
-            
-            // ĐIỀU CHỈNH ĐỘ CAO HOA CHO MOBILE
             const isMobile = canvas.width < 500;
-            const spacing = isMobile ? canvas.width * 0.23 : 150;
-            const baseH = isMobile ? canvas.height * 0.45 : canvas.height * 0.4; // Tăng tỷ lệ chiều cao cây
+            const spacing = isMobile ? canvas.width * 0.24 : 160;
+            const baseH = isMobile ? canvas.height * 0.48 : canvas.height * 0.45;
 
             flowers.push(new Flower(cx - spacing, by, -0.3, 0.6, baseH * 0.85, 60)); 
             flowers.push(new Flower(cx + spacing, by, 0.3, 0.6, baseH * 0.85, 100));
-            flowers.push(new Flower(cx - spacing * 0.45, by, -0.1, 0.75, baseH * 0.95, 30)); 
+            flowers.push(new Flower(cx - spacing * 0.5, by, -0.1, 0.75, baseH * 0.95, 30)); 
             flowers.push(new Flower(cx + spacing * 0.45, by, 0.1, 0.75, baseH * 0.95, 50));
-            flowers.push(new Flower(cx, by, 0, 1.0, baseH * 1.1, 0)); // Cây giữa cao nhất
+            flowers.push(new Flower(cx, by, 0, 1.0, baseH * 1.15, 0));
 
             for (let i = 0; i < canvas.width; i += 10) {
                 grasses.push({ x: i, h: 0, maxH: 30 + Math.random() * 30, off: Math.random() * Math.PI });
