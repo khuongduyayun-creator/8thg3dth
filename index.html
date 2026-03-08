@@ -149,12 +149,20 @@
         window.addEventListener('resize', resize);
         resize();
 
+        // HÀM KÍCH HOẠT NHẠC CHO ĐIỆN THOẠI
         function startEverything() {
             if (!isStarted) {
-                music.play().catch(() => {
+                // Giải pháp "ép" trình duyệt phát nhạc
+                music.play().then(() => {
+                    console.log("Nhạc đang phát");
+                }).catch(() => {
+                    // Nếu bị chặn, thử phát với âm lượng 0 rồi mở lại
                     music.muted = true;
-                    music.play();
-                    music.muted = false;
+                    music.play().then(() => {
+                        setTimeout(() => {
+                            music.muted = false;
+                        }, 100);
+                    });
                 });
 
                 isStarted = true;
@@ -332,6 +340,11 @@
             frame++;
             requestAnimationFrame(animate);
         }
+
+            // Gửi sự kiện để "đánh thức" audio trên một số trình duyệt kén hơn
+            window.addEventListener('touchstart', function() {
+                if(music.paused && isStarted) music.play();
+            }, { once: false });
 
         animate();
     </script>
