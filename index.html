@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>8/3 tặng 12A1 NCT</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;600&family=Pacifico&display=swap');
@@ -9,79 +10,81 @@
         body {
             margin: 0; padding: 0;
             background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            min-height: 100vh;
             overflow: hidden;
             font-family: 'Segoe UI', 'Arial', sans-serif;
-            cursor: pointer;
+            touch-action: manipulation;
         }
 
-        /* --- MÂY TRẮNG RÕ NÉT --- */
+        /* --- MÂY TRẮNG BỒNG BỀNH --- */
         .cloud {
             position: absolute;
             background: #fff;
             border-radius: 100px;
-            opacity: 0.9; 
-            filter: blur(4px); 
+            opacity: 0.8; 
+            filter: blur(5px);
             z-index: 1;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             animation: moveClouds linear infinite;
         }
         .cloud::after, .cloud::before {
             content: '';
             position: absolute;
             background: #fff;
-            border-radius: 100px;
+            border-radius: 50%;
         }
+        .cloud::after { width: 50px; height: 50px; top: -25px; left: 25px; }
+        .cloud::before { width: 40px; height: 40px; top: -15px; left: 70px; }
+
         @keyframes moveClouds {
-            from { left: -250px; }
+            from { left: -200px; }
             to { left: 100%; }
         }
 
         /* --- CỤM CHỮ CHÚC MỪNG --- */
         .header {
             position: absolute;
-            top: 60px;
+            top: 10%; 
             width: 100%;
             text-align: center;
             z-index: 100;
             pointer-events: none;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .header h1, .header .main-wish, .header .sub-wish {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(20px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
         }
 
-        .header.show h1 { opacity: 1; transform: translateY(0); transition-delay: 0s; }
-        .header.show .main-wish { opacity: 1; transform: translateY(0); transition-delay: 0.8s; }
-        .header.show .sub-wish { opacity: 1; transform: translateY(0); transition-delay: 1.6s; }
+        .header.show h1 { opacity: 1; transform: translateY(0); }
+        .header.show .main-wish { opacity: 1; transform: translateY(0); transition-delay: 0.6s; }
+        .header.show .sub-wish { opacity: 1; transform: translateY(0); transition-delay: 1.2s; }
 
         .header h1 {
-            font-size: 2.8rem;
+            font-size: 2.2rem;
             font-family: 'Dancing Script', cursive;
             background: linear-gradient(to right, #c9184a, #ff4d6d, #ff758f);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
-            filter: drop-shadow(0 5px 10px rgba(255, 77, 109, 0.2));
-            animation: floating 4s ease-in-out infinite;
+            line-height: 1.2;
         }
 
-        /* Thay đổi font chữ cho 2 câu chúc */
         .header .main-wish {
             color: #800f2f;
-            font-size: 1.4rem;
+            font-size: 1rem;
             margin-top: 15px;
-            font-family: 'Quicksand', sans-serif; /* Font chữ hiện đại, dễ thương */
+            font-family: 'Quicksand', sans-serif;
             font-weight: 600;
         }
 
         .header .sub-wish {
             color: #c9184a;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             margin-top: 10px;
-            font-family: 'Pacifico', cursive; /* Font chữ viết tay nghệ thuật */
-            letter-spacing: 0.5px;
+            font-family: 'Pacifico', cursive;
         }
 
         .hint {
@@ -89,39 +92,41 @@
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             color: #ff4d6d;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-align: center;
             animation: blink 2s infinite;
             z-index: 101;
+            width: 100%;
+            font-weight: bold;
         }
 
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        canvas { display: block; position: relative; z-index: 10; }
+        canvas { display: block; position: absolute; bottom: 0; left: 0; z-index: 10; }
+
+        @media (min-width: 768px) {
+            .header h1 { font-size: 3.5rem; }
+            .header .main-wish { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body onclick="startEverything()" ontouchstart="startEverything()">
 
-    <div class="cloud" style="width: 160px; height: 55px; top: 10%; animation-duration: 25s;"></div>
-    <div class="cloud" style="width: 260px; height: 85px; top: 25%; animation-duration: 35s; animation-delay: -5s;"></div>
-    <div class="cloud" style="width: 140px; height: 45px; top: 15%; animation-duration: 20s; animation-delay: -12s;"></div>
+    <div class="cloud" style="width: 120px; height: 40px; top: 7%; animation-duration: 25s;"></div>
+    <div class="cloud" style="width: 180px; height: 50px; top: 18%; animation-duration: 35s; animation-delay: -5s;"></div>
 
-    <audio id="bgMusic" loop>
-        <source src="<iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2279731814&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/04-nguy-n-ph-m-kh-ng-duy" title="04. Nguyễn Phạm Khương Duy" target="_blank" style="color: #cccccc; text-decoration: none;">04. Nguyễn Phạm Khương Duy</a> · <a href="https://soundcloud.com/04-nguy-n-ph-m-kh-ng-duy/nhacnen-2" title="nhacnen" target="_blank" style="color: #cccccc; text-decoration: none;">nhacnen</a></div>" type="audio/mpeg">
+    <audio id="bgMusic" loop preload="auto" playsinline>
+        <source src="nhacnen.wav" type="audio/mpeg">
     </audio>
 
     <div class="header" id="mainHeader">
-        <h1>Gửi những bông hoa xinh đẹp nhất 12A1</h1>
-        <p class="main-wish">Chúc các bạn một ngày 8/3 rạng rỡ, luôn tự tin tỏa sáng và chinh phục thành công mọi ước mơ phí trước!</p>
-        <p class="sub-wish">Mãi là những đóa hoa rạng rỡ nhất của 12a1 nhé! ✨</p>
+        <h1>Gửi những bông hoa<br>xinh đẹp nhất 12A1</h1>
+        <p class="main-wish">Chúc các bạn một ngày 8/3 rạng rỡ, tỏa sáng và thành công rực rỡ!</p>
+        <p class="sub-wish">Mãi là những đóa hoa rạng rỡ nhất của 12a1 nhé ✨</p>
     </div>
 
     <div class="hint" id="hintText">
-        🌸 Chạm vào màn hình để nhận quà... 🌸
+        🌸 Chạm vào màn hình để bắt đầu... 🌸
     </div>
 
     <canvas id="gardenCanvas"></canvas>
@@ -134,37 +139,47 @@
         const header = document.getElementById('mainHeader');
 
         let isStarted = false;
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
         let frame = 0;
 
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            if(isStarted) init(); 
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // HÀM KÍCH HOẠT NHẠC CHO ĐIỆN THOẠI
         function startEverything() {
             if (!isStarted) {
-                music.play().catch(() => {});
+                // Giải pháp "ép" trình duyệt phát nhạc
+                music.play().then(() => {
+                    console.log("Nhạc đang phát");
+                }).catch(() => {
+                    // Nếu bị chặn, thử phát với âm lượng 0 rồi mở lại
+                    music.muted = true;
+                    music.play().then(() => {
+                        setTimeout(() => {
+                            music.muted = false;
+                        }, 100);
+                    });
+                });
+
                 isStarted = true;
                 hint.style.display = 'none'; 
                 header.classList.add('show');
+                init();
             }
-        }
-
-        const particles = [];
-        for(let i=0; i<50; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 2 + 0.5,
-                speedY: -(Math.random() * 0.3 + 0.1)
-            });
         }
 
         const hearts = [];
         function spawnHeart() {
-            if (isStarted && frame % 45 === 0) {
+            if (isStarted && frame % 40 === 0) {
                 hearts.push({
                     x: Math.random() * canvas.width,
                     y: canvas.height + 20,
-                    size: Math.random() * 7 + 4,
-                    speed: Math.random() * 1.2 + 0.5,
+                    size: Math.random() * 6 + 4,
+                    speed: Math.random() * 1.5 + 0.8,
                     life: 1.0
                 });
             }
@@ -196,10 +211,10 @@
             update() {
                 if (isStarted && frame > this.delay) {
                     let stemGap = this.maxStemLen - this.stemLen;
-                    if (stemGap > 0.1) this.stemLen += stemGap * 0.015 + 0.15; 
-                    if (this.stemLen > this.maxStemLen * 0.6) {
+                    if (stemGap > 0.1) this.stemLen += stemGap * 0.02 + 0.2; 
+                    if (this.stemLen > this.maxStemLen * 0.5) {
                         let bloomGap = 1 - this.bloom;
-                        if (bloomGap > 0.005) this.bloom += bloomGap * 0.012;
+                        if (bloomGap > 0.005) this.bloom += bloomGap * 0.018;
                     }
                 }
             }
@@ -207,27 +222,22 @@
             draw() {
                 this.update();
                 if (this.stemLen <= 0) return;
-                const sway = Math.sin(frame * 0.015 + this.swayOffset) * 0.02;
+                const sway = Math.sin(frame * 0.018 + this.swayOffset) * 0.03;
                 ctx.save();
                 ctx.translate(this.startX, this.startY);
                 ctx.rotate(this.angle + sway);
                 
-                // Vẽ thân cây
                 ctx.beginPath();
                 ctx.moveTo(0, 0); ctx.lineTo(0, -this.stemLen);
-                ctx.strokeStyle = '#1b4332'; ctx.lineWidth = 10 * this.scale;
+                ctx.strokeStyle = '#1b4332'; ctx.lineWidth = 7 * this.scale;
                 ctx.lineCap = 'round'; ctx.stroke();
                 
-                // --- THÊM LÁ CHO CÂY ---
-                if (this.stemLen > 50) {
+                if (this.stemLen > 40) {
                     for(let i=1; i<=3; i++) {
                         ctx.save();
-                        // Lá mọc dọc theo thân tùy theo độ dài hiện tại
                         ctx.translate(0, -this.stemLen * (i/4.5)); 
                         ctx.rotate(i % 2 === 0 ? 0.7 : -0.7);
-                        // Kích thước lá nhỏ dần khi lên cao
-                        const leafScale = (1.2 - i*0.2) * this.scale;
-                        this.drawLeaf(50 * leafScale, 25 * leafScale, '#2d6a4f');
+                        this.drawLeaf(45 * this.scale, 22 * this.scale, '#2d6a4f');
                         ctx.restore();
                     }
                 }
@@ -239,18 +249,18 @@
                     for (let layer = 0; layer < 3; layer++) {
                         ctx.save();
                         ctx.rotate(layer * 0.4);
-                        for (let i = 0; i < 8; i++) {
+                        for (let i = 0; i < 6; i++) {
                             ctx.save();
-                            ctx.rotate((i * Math.PI * 2) / 8);
-                            this.drawLeaf(85 * (1 - layer * 0.15), 38 * (1 - layer * 0.15), '#ff4d6d', true);
+                            ctx.rotate((i * Math.PI * 2) / 6);
+                            this.drawLeaf(75 * (1 - layer * 0.15), 38 * (1 - layer * 0.15), '#ff4d6d', true);
                             ctx.restore();
                         }
                         ctx.restore();
                     }
                     ctx.fillStyle = '#ffb703';
-                    for (let i = 0; i < 7; i++) {
+                    for (let i = 0; i < 6; i++) {
                         ctx.beginPath();
-                        ctx.arc(Math.cos(i) * 7, Math.sin(i) * 7, 4, 0, Math.PI * 2);
+                        ctx.arc(Math.cos(i) * 6, Math.sin(i) * 6, 5, 0, Math.PI * 2);
                         ctx.fill();
                     }
                     ctx.restore();
@@ -259,35 +269,52 @@
             }
         }
 
-        const flowers = []; const grasses = [];
+        const flowers = []; const grasses = []; const particles = [];
+
         function init() {
             flowers.length = 0; grasses.length = 0;
             const cx = canvas.width / 2;
-            const by = canvas.height + 20;
-            flowers.push(new Flower(cx - 140, by, -0.45, 0.65, 250, 80)); 
-            flowers.push(new Flower(cx + 140, by, 0.45, 0.65, 250, 120));
-            flowers.push(new Flower(cx - 70, by, -0.15, 0.8, 230, 30)); 
-            flowers.push(new Flower(cx + 70, by, 0.15, 0.8, 230, 50));
-            flowers.push(new Flower(cx, by, 0, 1.0, 300, 0));
+            const by = canvas.height + 10;
+            const isMobile = canvas.width < 500;
+            const spacing = isMobile ? canvas.width * 0.24 : 160;
+            const baseH = isMobile ? canvas.height * 0.48 : canvas.height * 0.45;
 
-            for (let i = 0; i < canvas.width; i += 7) {
-                grasses.push({ x: i, h: 0, maxH: 40 + Math.random() * 45, off: Math.random() * Math.PI });
+            flowers.push(new Flower(cx - spacing, by, -0.3, 0.6, baseH * 0.85, 60)); 
+            flowers.push(new Flower(cx + spacing, by, 0.3, 0.6, baseH * 0.85, 100));
+            flowers.push(new Flower(cx - spacing * 0.5, by, -0.1, 0.75, baseH * 0.95, 30)); 
+            flowers.push(new Flower(cx + spacing * 0.45, by, 0.1, 0.75, baseH * 0.95, 50));
+            flowers.push(new Flower(cx, by, 0, 1.0, baseH * 1.15, 0));
+
+            for (let i = 0; i < canvas.width; i += 10) {
+                grasses.push({ x: i, h: 0, maxH: 30 + Math.random() * 30, off: Math.random() * Math.PI });
+            }
+
+            if(particles.length === 0) {
+                for(let i=0; i<30; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 2 + 0.5,
+                        speedY: -(Math.random() * 0.3 + 0.1)
+                    });
+                }
             }
         }
 
-        function drawDecor() {
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
                 p.y += p.speedY;
                 if(p.y < 0) p.y = canvas.height;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(Math.sin(frame * 0.01) * 0.4)})`;
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(Math.sin(frame * 0.02) * 0.5)})`;
                 ctx.fill();
             });
 
             spawnHeart();
             hearts.forEach((h, i) => {
-                h.y -= h.speed; h.life -= 0.004;
+                h.y -= h.speed; h.life -= 0.005;
                 if(h.life <= 0) hearts.splice(i, 1);
                 ctx.save();
                 ctx.globalAlpha = h.life;
@@ -299,33 +326,27 @@
                 ctx.fillStyle = "#ff758f"; ctx.fill();
                 ctx.restore();
             });
-        }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawDecor();
             grasses.forEach(g => {
-                if (isStarted && g.h < g.maxH) g.h += (g.maxH - g.h) * 0.02 + 0.12;
+                if (isStarted && g.h < g.maxH) g.h += (g.maxH - g.h) * 0.02 + 0.1;
                 const sway = Math.sin(frame * 0.02 + g.off) * (g.h * 0.06);
                 ctx.beginPath();
                 ctx.moveTo(g.x, canvas.height);
                 ctx.quadraticCurveTo(g.x + sway, canvas.height - g.h/2, g.x + sway*0.5, canvas.height - g.h);
-                ctx.strokeStyle = '#2d6a4f'; ctx.lineWidth = 3; ctx.stroke();
+                ctx.strokeStyle = '#2d6a4f'; ctx.lineWidth = 2; ctx.stroke();
             });
+
             flowers.forEach(f => f.draw());
             frame++;
             requestAnimationFrame(animate);
         }
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            init();
-        });
+            // Gửi sự kiện để "đánh thức" audio trên một số trình duyệt kén hơn
+            window.addEventListener('touchstart', function() {
+                if(music.paused && isStarted) music.play();
+            }, { once: false });
 
-        init();
         animate();
     </script>
 </body>
 </html>
-
-
